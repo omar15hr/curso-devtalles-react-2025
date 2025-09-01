@@ -13,7 +13,11 @@ export default function GifsApp() {
   };
 
   const handleSearch = (query: string) => {
-    setPreviousTerms(query);
+    query = query.trim().toLowerCase();
+    if (query.length === 0) return;
+    if (previousTerms.includes(query)) return;
+    
+    setPreviousTerms([query, ...previousTerms].slice(0, 7));
   };
 
   return (
