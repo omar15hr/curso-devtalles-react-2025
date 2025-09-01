@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { GifList } from "./gifs/components/GifList";
 import { PreviousSearches } from "./gifs/components/PreviousSearches";
-import { mockGifs } from "./mock-data/gifs.mock";
 import { CustomHeader } from "./shared/components/CustomHeader";
 import { SearchBar } from "./shared/components/SearchBar";
 import { getGifsByQuery } from "./gifs/actions/get-gifs-by-query.action";
+import type { Gif } from "./gifs/interfaces/gif.interface";
 
 export default function GifsApp() {
   const [previousTerms, setPreviousTerms] = useState(["goku", "dragon ball z"]);
+  const [gifs, setGifs] = useState<Gif[]>([]);
 
   const handleTermClicked = (term: string) => {
     console.log(`Término buscado: ${term}`);
@@ -21,7 +22,7 @@ export default function GifsApp() {
     setPreviousTerms([query, ...previousTerms].slice(0, 7));
 
     const gifs = await getGifsByQuery(query);
-    console.log({gifs});
+    setGifs(gifs);
   };
 
   return (
@@ -41,7 +42,7 @@ export default function GifsApp() {
         searches={previousTerms}
       />
 
-      <GifList gifs={mockGifs} />
+      <GifList gifs={gifs} />
     </>
   );
 }
